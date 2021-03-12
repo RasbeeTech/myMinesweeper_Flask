@@ -1,0 +1,12 @@
+page_title {
+    color: purple;
+}
+
+div {
+    height: 500px;
+    width: 500px;
+    background-color: red;
+}
+div h1 {
+    color: purple;
+}
