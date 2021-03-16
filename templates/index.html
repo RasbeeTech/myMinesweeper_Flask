@@ -30,7 +30,7 @@
         <nav class="nav nav-pills nav-fill mt-3 bg-success">
             <div class="nav-item">
                 <i class="fa fa-flag fa-3x text-danger"></i>
-                <h2 class="d-inline pl-4">30</h2>
+                <h2 class="d-inline pl-4">{{ num_of_flags }}</h2>
             </div>
             <div class="nav-item">
                 <i class="fa fa-clock-o fa-3x text-warning"></i>
@@ -48,14 +48,16 @@
           </div>
         </nav>
         <!-- Game Display -->
-        <div class="container-fluid border mt-3">
-            {% for row in rows %}
+        <div class="container border mt-3 mx-0">
+            <form method="post">
+                {% for row in rows %}
                 <div class="row flex-nowrap">
                 {% for column in columns %}
-                    <button class="btn btn-outline-success d-inline">{{ row }} {{ column }}</button>
+                    <button class="btn btn-outline-success d-inline" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
                 {%  endfor %}
                 </div>
             {%  endfor %}
+            </form>
         </div>
     </div>
     {% endblock %}
