@@ -16,13 +16,13 @@ def play_field(difficulty):
 def index():
     rows = play_field('easy')
     columns = play_field('easy')
-    return render_template('index.html', rows=rows, columns=columns)
+    return render_template('index.html', rows=rows, columns=columns, difficulty='medium')
 
 
 @app.route('/', methods=['POST', 'GET'])
 def form_post():
     if request.method == 'POST':
-        # TODO: Fix difficulty buttons
-        # rows = play_field()
-        # columns = play_field('easy')
-        return render_template('index.html', rows=1, columns=1)
+        # TODO: render template partially
+        rows = play_field(request.form['difficulty'])
+        columns = play_field(request.form['difficulty'])
+        return render_template('index.html', rows=rows, columns=columns, difficulty=request.form['difficulty'])
