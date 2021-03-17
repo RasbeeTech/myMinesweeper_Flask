@@ -3,6 +3,7 @@ from source import Minesweeper
 
 app = Flask(__name__)
 
+
 game = Minesweeper('medium')
 
 
@@ -13,7 +14,8 @@ def index():
     return render_template('index.html',
                            rows=rows, columns=columns,
                            difficulty='medium',
-                           num_of_flags=game.mines)
+                           num_of_flags=game.mines,
+                           mine_locations=game.mine_locations)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -30,7 +32,9 @@ def form_post():
                                    rows=rows,
                                    columns=columns,
                                    difficulty=game.difficulty,
-                                   num_of_flags=game.mines)
+                                   num_of_flags=game.mines,
+                                   mine_locations=game.mine_locations)
         if 'tile' in keys:
             print(request.form['tile'])
+
             return '', 204  # HTTP empty response
