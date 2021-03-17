@@ -1,10 +1,12 @@
 import random
 
+
 class Minesweeper:
     def __init__(self, difficulty):
         self.difficulty = difficulty
         self.mines = self.num_of_mines()
         self.mine_locations = self.set_mines()
+        self.revealed_tiles = []
         self.indicators = []
 
     def num_of_mines(self):
@@ -40,6 +42,10 @@ class Minesweeper:
                 mines_planted += 1
         return mine_tiles
 
+    def reveal_tiles(self, row, column):
+        if [row,column] not in self.revealed_tiles:
+            x = 10
+
     def set_indicators(self):
         for mine in self.mine_locations:
             self.check_adjacent(mine[0], mine[1], self.get_indicators)
@@ -52,7 +58,7 @@ class Minesweeper:
         r = row
         c = column
         max_value = max(self.play_field())
-        if r == 0 and c ==0:
+        if r == 0 and c == 0:
             func(r, c + 1)
             func(r + 1, c)
             func(r + 1, c + 1)
@@ -113,3 +119,17 @@ if __name__ == '__main__':
     print(game.mine_locations)
     game.set_indicators()
     print(game.indicators)
+
+    # TODO: make a dictionary of tiles and the respective number indicator
+    ind = game.indicators
+    indi = {}
+    for i in ind:
+        if i[0] in indi:
+            indi[i[0]].append(i[1])
+        elif i[1] in ind[i[0]]:
+            x = 10
+        else:
+            indi[i[0]] = [(i[1])]
+        #print(i[0], i[1])
+
+    print(indi)

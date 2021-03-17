@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from source import Minesweeper
 
 app = Flask(__name__)
+app.secret_key = 'this is a secret key'
 
 
 game = Minesweeper('medium')
