@@ -5,6 +5,7 @@ class Minesweeper:
     def __init__(self, difficulty):
         self.difficulty = difficulty
         self.mines = self.num_of_mines()
+        self.flags = self.mines
         self.mine_locations = self.set_mines()
 
         self.revealed_tiles = []
@@ -57,7 +58,7 @@ class Minesweeper:
                 # self.game_over()
             elif [row, column] in self.ind_location:
                 self.revealed_tiles.append([row, column])
-            elif [row, column] not in self.mine_locations and [row, column] not in self.indicators:
+            elif [row, column] not in self.mine_locations and [row, column] not in self.ind_location:
                 # self.tiles[row][column].config(bg="#a1776a", relief="ridge")
                 self.revealed_tiles.append([row, column])
                 self.check_adjacent(row, column, self.reveal_tiles)
@@ -154,3 +155,5 @@ if __name__ == '__main__':
 
     game.reveal_tiles(4, 4)
     print(game.revealed_tiles)
+
+    print("mines: ",game.mine_locations)

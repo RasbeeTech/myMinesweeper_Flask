@@ -38,7 +38,7 @@ def form_post():
                                    rows=rows,
                                    columns=columns,
                                    difficulty=game.difficulty,
-                                   num_of_flags=game.mines,
+                                   num_of_flags=game.flags,
                                    mine_locations=game.mine_locations,
                                    ind_locations=game.ind_location,
                                    ind_number=game.ind_number,
@@ -46,13 +46,13 @@ def form_post():
         if 'tile' in keys:
             tile = request.form['tile']
             location = [int(x) for x in tile.split()]
-            print(location)
-            game.reveal_tiles(location[0],location[1])
+            # print(location)
+            game.reveal_tiles(location[0], location[1])
             return render_template('index.html',
                                    rows=game.play_field(),
                                    columns=game.play_field(),
                                    difficulty=game.difficulty,
-                                   num_of_flags=game.mines,
+                                   num_of_flags=game.flags,
                                    mine_locations=game.mine_locations,
                                    ind_locations=game.ind_location,
                                    ind_number=game.ind_number,

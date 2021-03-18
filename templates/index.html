@@ -54,13 +54,13 @@
                     <div class="row flex-nowrap">
                     {% for column in columns %}
                         {% if [row, column] in revealed_tiles %}
-                            {% if [row, column] in mine_locations %}
-                                <button class="btn btn-danger d-inline" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
-                            {% elif [row, column] in ind_locations %}
+                            {% if [row, column] in ind_locations %}
                                 <button class="btn btn-warning d-inline" name="tile" value="{{ row }} {{ column }}">{{ ind_number[ind_locations.index([row,column])] }}</button>
                             {% else %}
-                                <button class="btn btn-success d-inline" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
+                                <button class="btn btn-primary d-inline disabled" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
                             {% endif %}
+                        {% elif [row, column] in mine_location %}
+                            <a href="#game-over-modal" class="btn btn-danger d-inline" name="tile" value="{{ row }} {{ column }}">mine</a>
                         {% else %}
                             <button class="btn btn-success d-inline" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
                         {% endif %}
@@ -68,6 +68,22 @@
                     </div>
                 {%  endfor %}
             </form>
+        </div>
+    </div>
+    <a href="#game-over-modal" class="btn btn-lg btn-primary" data-toggle="modal">Launch Demo Modal</a>
+    <!-- Game over Modal -->
+    <div id="game-over-modal" class="modal" tabindex="-1">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Game Over</h5>
+            </div>
+            <div class="modal-body">
+                <p>Try again?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary">Yes</button>
+            </div>
         </div>
     </div>
     {% endblock %}
