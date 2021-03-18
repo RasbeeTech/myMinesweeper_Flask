@@ -6,8 +6,12 @@ class Minesweeper:
         self.difficulty = difficulty
         self.mines = self.num_of_mines()
         self.mine_locations = self.set_mines()
+
         self.revealed_tiles = []
+
         self.indicators = []
+        self.ind_location = []
+        self.ind_number = []
 
     def num_of_mines(self):
         return {
@@ -20,6 +24,10 @@ class Minesweeper:
         self.difficulty = new_difficulty
         self.mines = self.num_of_mines()
         self.mine_locations = self.set_mines()
+        self.revealed_tiles = []
+        self.indicators = []
+        self.ind_location = []
+        self.ind_number = []
 
     def play_field(self):
         if self.difficulty == 'easy':
@@ -43,16 +51,37 @@ class Minesweeper:
         return mine_tiles
 
     def reveal_tiles(self, row, column):
-        if [row,column] not in self.revealed_tiles:
-            x = 10
+        if [row, column] not in self.revealed_tiles:
+            if [row, column] in self.mine_locations:
+                x = 10
+                # self.game_over()
+            elif [row, column] in self.ind_location:
+                self.revealed_tiles.append([row, column])
+            elif [row, column] not in self.mine_locations and [row, column] not in self.indicators:
+                # self.tiles[row][column].config(bg="#a1776a", relief="ridge")
+                self.revealed_tiles.append([row, column])
+                self.check_adjacent(row, column, self.reveal_tiles)
 
     def set_indicators(self):
         for mine in self.mine_locations:
             self.check_adjacent(mine[0], mine[1], self.get_indicators)
+        self.indicator_numbers_and_location()
 
     def get_indicators(self, row, column):
         if [row, column] not in self.mine_locations:
             self.indicators.append([row, column])
+
+    def indicator_numbers_and_location(self):
+        ind = self.indicators
+
+        ind_location = []
+        ind_number = []
+        for i in ind:
+            if i not in ind_location:
+                ind_location.append(i)
+                ind_number.append(ind.count(i))
+        self.ind_location = ind_location
+        self.ind_number = ind_number
 
     def check_adjacent(self, row, column, func):
         r = row
@@ -120,25 +149,8 @@ if __name__ == '__main__':
     game.set_indicators()
     print(game.indicators)
 
-    # TODO: make a or list dictionary of tiles and the respective number indicator
-    ind = game.indicators
-    indi = {}
-    for i in ind:
-        if i[0] in indi:
-            indi[i[0]].append(i[1])
-        elif i[1] in ind[i[0]]:
-            x = 10
-        else:
-            indi[i[0]] = [(i[1])]
-        #print(i[0], i[1])
+    print("length:", len(game.ind_location), ":", game.ind_location)
+    print("length:", len(game.ind_number), ":", game.ind_number)
 
-    ind_location = []
-    ind_number = []
-    for i in ind:
-        if i not in ind_location:
-            ind_location.append(i)
-            ind_number.append(ind.count(i))
-
-    # print(indi)
-    print("length: ", len(ind_location), ":", ind_location)
-    print("length: ", len(ind_number), ":", ind_number)
+    game.reveal_tiles(4, 4)
+    print(game.revealed_tiles)
