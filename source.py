@@ -115,12 +115,12 @@ if __name__ == '__main__':
     print(game.num_of_mines())
     print(game.play_field())
     print(game.mine_locations)
-    game.change_difficulty('hard')
+    game.change_difficulty('easy')
     print(game.mine_locations)
     game.set_indicators()
     print(game.indicators)
 
-    # TODO: make a dictionary of tiles and the respective number indicator
+    # TODO: make a or list dictionary of tiles and the respective number indicator
     ind = game.indicators
     indi = {}
     for i in ind:
@@ -132,4 +132,13 @@ if __name__ == '__main__':
             indi[i[0]] = [(i[1])]
         #print(i[0], i[1])
 
-    print(indi)
+    ind_location = []
+    ind_number = []
+    for i in ind:
+        if i not in ind_location:
+            ind_location.append(i)
+            ind_number.append(ind.count(i))
+
+    # print(indi)
+    print("length: ", len(ind_location), ":", ind_location)
+    print("length: ", len(ind_number), ":", ind_number)
