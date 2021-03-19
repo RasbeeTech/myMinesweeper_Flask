@@ -13,6 +13,7 @@ def index():
     game.change_difficulty('medium')
     rows = columns = game.play_field()
     game.set_indicators()
+    print(game.mine_locations)
     return render_template('index.html',
                            rows=rows, columns=columns,
                            difficulty='medium',
@@ -48,6 +49,8 @@ def form_post():
             location = [int(x) for x in tile.split()]
             # print(location)
             game.reveal_tiles(location[0], location[1])
+            print(game.mine_locations)
+            print(game.revealed_tiles)
             return render_template('index.html',
                                    rows=game.play_field(),
                                    columns=game.play_field(),

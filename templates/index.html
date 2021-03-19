@@ -59,10 +59,10 @@
                             {% else %}
                                 <button class="btn btn-primary d-inline disabled" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
                             {% endif %}
-                        {% elif [row, column] in mine_location %}
-                            <a href="#game-over-modal" class="btn btn-danger d-inline" name="tile" value="{{ row }} {{ column }}">mine</a>
+                        {% elif [row, column] in mine_locations %}
+                            <button class="btn btn-danger d-inline" name="tile" value="{{ row }} {{ column }}">mine</button>
                         {% else %}
-                            <button class="btn btn-success d-inline" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
+                            <button class="btn btn-success d-inline" name="tile" value="{{ row }} {{ column }}">this</button>
                         {% endif %}
                     {%  endfor %}
                     </div>
