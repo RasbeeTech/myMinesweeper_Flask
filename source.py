@@ -6,13 +6,15 @@ class Minesweeper:
         self.difficulty = difficulty
         self.mines = self.num_of_mines()
         self.flags = self.mines
-        self.mine_locations = self.set_mines()
+        self.mine_locations = []
 
         self.revealed_tiles = []
 
         self.indicators = []
         self.ind_location = []
         self.ind_number = []
+
+        self.game_over = False
 
     def num_of_mines(self):
         return {
@@ -24,7 +26,7 @@ class Minesweeper:
     def change_difficulty(self, new_difficulty):
         self.difficulty = new_difficulty
         self.mines = self.num_of_mines()
-        self.mine_locations = self.set_mines()
+        self.set_mines()
         self.revealed_tiles = []
         self.indicators = []
         self.ind_location = []
@@ -46,22 +48,26 @@ class Minesweeper:
         while mines_planted < num_of_mines:
             row = random.choice(self.play_field())
             col = random.choice(self.play_field())
-            if [row, col] not in mine_tiles:
+            if [row, col] not in mine_tiles and [row, col] not in self.revealed_tiles:
                 mine_tiles.append([row, col])
                 mines_planted += 1
-        return mine_tiles
+        self.mine_locations = mine_tiles
 
     def reveal_tiles(self, row, column):
         if [row, column] not in self.revealed_tiles:
+            # TODO: use this function to start the game and set the mines
             if [row, column] in self.mine_locations:
-                x = 10
-                # self.game_over()
+                self.game_over = True
             elif [row, column] in self.ind_location:
                 self.revealed_tiles.append([row, column])
             elif [row, column] not in self.mine_locations and [row, column] not in self.ind_location:
                 # self.tiles[row][column].config(bg="#a1776a", relief="ridge")
                 self.revealed_tiles.append([row, column])
                 self.check_adjacent(row, column, self.reveal_tiles)
+
+    def start_game(self):
+        self.set_mines()
+        self.set_indicators()
 
     def set_indicators(self):
         for mine in self.mine_locations:
@@ -156,4 +162,6 @@ if __name__ == '__main__':
     game.reveal_tiles(4, 4)
     print(game.revealed_tiles)
 
-    print("mines: ",game.mine_locations)
+    print("mines: ", game.mine_locations)
+
+
