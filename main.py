@@ -72,3 +72,16 @@ def form_post():
         if 'mine_tile' in keys:
             game.toggle_game_over()
             return '', 204  # HTTP empty response
+        if 'new_game' in keys:
+            # TODO: flask controlled module:
+            #  https://stackoverflow.com/questions/54524827/how-to-show-bootstrap-modal-on-rendering-the-same-page-in-flask
+            game.new_game()
+            rows = columns = game.play_field()
+            return render_template('index.html',
+                                   rows=rows, columns=columns,
+                                   difficulty=game.difficulty,
+                                   num_of_flags=game.flags,
+                                   mine_locations=game.mine_locations,
+                                   ind_locations=game.ind_location,
+                                   ind_number=game.ind_number,
+                                   revealed_tiles=game.revealed_tiles)

@@ -6,6 +6,12 @@
     <title>Minesweeper</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        button {
+            width: 50px !important;
+            height: 50px !important;
+        }
+    </style>
 </head>
 <body>
     {% block content %}
@@ -62,7 +68,7 @@
                                 <button class="btn btn-primary d-inline disabled" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
                             {% endif %}
                         {% elif [row, column] in mine_locations %}
-                            <button class="btn btn-danger d-inline" href="#game-over-modal" name="mine_tile" data-toggle="modal" value="{{ row }} {{ column }}">X</button>
+                            <button class="btn btn-danger d-inline" name="tile" value="{{ row }} {{ column }}">X</button>
                         {% else %}
                             <button class="btn btn-success d-inline" name="tile" value="{{ row }} {{ column }}">this</button>
                         {% endif %}
@@ -87,8 +93,10 @@
                 <p>Try again?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-primary">Yes</button>
+                <form method="post">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-primary" name="new_game" value="new_game">Yes</button>
+                </form>
             </div>
         </div>
         </div>
