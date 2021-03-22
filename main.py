@@ -42,7 +42,6 @@ def form_post():
         if 'tile' in keys:
             tile = request.form['tile']
             location = [int(x) for x in tile.split()]
-            # print(location)
             game.reveal_tiles(location[0], location[1])
             print(game.mine_locations)
             print(game.revealed_tiles)
@@ -60,11 +59,7 @@ def form_post():
         if 'start_game' in keys:
             tile = request.form['start_game']
             location = [int(x) for x in tile.split()]
-            game.revealed_tiles.append([location[0], location[1]])
-            game.set_mines()
-            game.set_indicators()
-            game.reveal_tiles(location[0], location[1])
-            print(game.revealed_tiles)
+            game.start_game(location[0], location[1])
             rows = columns = game.play_field()
             return render_template('index.html',
                                    rows=rows, columns=columns,
@@ -74,4 +69,6 @@ def form_post():
                                    ind_locations=game.ind_location,
                                    ind_number=game.ind_number,
                                    revealed_tiles=game.revealed_tiles)
-            # return '', 204  # HTTP empty response
+        if 'mine_tile' in keys:
+            game.toggle_game_over()
+            return '', 204  # HTTP empty response

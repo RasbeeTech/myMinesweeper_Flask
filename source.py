@@ -14,6 +14,7 @@ class Minesweeper:
         self.ind_location = []
         self.ind_number = []
 
+        self.start_tile = []
         self.game_over = False
 
     def num_of_mines(self):
@@ -26,7 +27,7 @@ class Minesweeper:
     def change_difficulty(self, new_difficulty):
         self.difficulty = new_difficulty
         self.mines = self.num_of_mines()
-        self.set_mines()
+        # self.set_mines()
         self.revealed_tiles = []
         self.indicators = []
         self.ind_location = []
@@ -48,26 +49,29 @@ class Minesweeper:
         while mines_planted < num_of_mines:
             row = random.choice(self.play_field())
             col = random.choice(self.play_field())
-            if [row, col] not in mine_tiles and [row, col] not in self.revealed_tiles:
+            if [row, col] not in mine_tiles and [row, col] not in self.start_tile:
                 mine_tiles.append([row, col])
                 mines_planted += 1
         self.mine_locations = mine_tiles
 
     def reveal_tiles(self, row, column):
         if [row, column] not in self.revealed_tiles:
-            # TODO: use this function to start the game and set the mines
             if [row, column] in self.mine_locations:
                 self.game_over = True
             elif [row, column] in self.ind_location:
                 self.revealed_tiles.append([row, column])
             elif [row, column] not in self.mine_locations and [row, column] not in self.ind_location:
-                # self.tiles[row][column].config(bg="#a1776a", relief="ridge")
                 self.revealed_tiles.append([row, column])
                 self.check_adjacent(row, column, self.reveal_tiles)
 
-    def start_game(self):
+    def start_game(self, row, column):
+        self.start_tile = [row, column]
         self.set_mines()
         self.set_indicators()
+        self.reveal_tiles(row, column)
+
+    def toggle_game_over(self):
+        self.game_over = True
 
     def set_indicators(self):
         for mine in self.mine_locations:

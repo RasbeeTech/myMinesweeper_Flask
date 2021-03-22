@@ -51,10 +51,10 @@
         <div class="container border mt-3 mx-0">
             <form method="post">
                 {% for row in rows %}
-                    <div class="row flex-nowrap">
+                    <div class="row flex-nowrap d-flex justify-content-center">
                     {% for column in columns %}
                         {% if revealed_tiles|length == 0 %}
-                            <button class="btn btn-success d-inline" name="start_game" value="{{ row }} {{ column }}">that</button>
+                            <button class="btn btn-success d-inline" name="start_game" value="{{ row }} {{ column }}"></button>
                         {% elif [row, column] in revealed_tiles %}
                             {% if [row, column] in ind_locations %}
                                 <button class="btn btn-warning d-inline disabled" name="tile" value="{{ row }} {{ column }}">{{ ind_number[ind_locations.index([row,column])] }}</button>
@@ -62,7 +62,7 @@
                                 <button class="btn btn-primary d-inline disabled" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
                             {% endif %}
                         {% elif [row, column] in mine_locations %}
-                            <button class="btn btn-danger d-inline" name="tile" value="{{ row }} {{ column }}">mine</button>
+                            <button class="btn btn-danger d-inline" href="#game-over-modal" name="mine_tile" data-toggle="modal" value="{{ row }} {{ column }}">X</button>
                         {% else %}
                             <button class="btn btn-success d-inline" name="tile" value="{{ row }} {{ column }}">this</button>
                         {% endif %}
