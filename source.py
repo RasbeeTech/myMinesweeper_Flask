@@ -27,10 +27,13 @@ class Minesweeper:
     def change_difficulty(self, new_difficulty):
         self.difficulty = new_difficulty
         self.mines = self.num_of_mines()
+        self.mine_locations = []
         self.revealed_tiles = []
         self.indicators = []
         self.ind_location = []
         self.ind_number = []
+        self.start_tile = []
+        self.game_over = False
 
     def play_field(self):
         if self.difficulty == 'easy':
@@ -38,7 +41,7 @@ class Minesweeper:
         if self.difficulty == 'medium':
             return list(range(0, 9))
         if self.difficulty == 'hard':
-            return list(range(0, 12))
+            return list(range(0, 11))
 
     def set_mines(self):
         num_of_mines = self.mines
@@ -79,13 +82,13 @@ class Minesweeper:
         self.game_over = True
 
     def new_game(self):
-        self.indicators = []
         self.mine_locations = []
         self.revealed_tiles = []
         self.indicators = []
         self.ind_location = []
         self.ind_number = []
         self.start_tile = []
+        self.game_over = False
 
     def set_indicators(self):
         for mine in self.mine_locations:

@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         button {
-            width: 50px !important;
-            height: 50px !important;
+            width: 40px !important;
+            height: 40px !important;
+            border-radius: 0 !important;
         }
     </style>
 </head>
@@ -60,17 +61,17 @@
                     <div class="row flex-nowrap d-flex justify-content-center">
                     {% for column in columns %}
                         {% if revealed_tiles|length == 0 %}
-                            <button class="btn btn-success d-inline" name="start_game" value="{{ row }} {{ column }}"></button>
+                            <button class="btn btn-success border d-inline" name="start_game" value="{{ row }} {{ column }}"></button>
                         {% elif [row, column] in revealed_tiles %}
                             {% if [row, column] in ind_locations %}
-                                <button class="btn btn-warning d-inline disabled" name="tile" value="{{ row }} {{ column }}">{{ ind_number[ind_locations.index([row,column])] }}</button>
+                                <button class="btn d-inline border font-weight-bold disabled" style="background-color: #C4A484; {{ indicator_style[ind_number[ind_locations.index([row,column])]] }}" name="tile" value="{{ row }} {{ column }}">{{ ind_number[ind_locations.index([row,column])] }}</button>
                             {% else %}
-                                <button class="btn btn-primary d-inline disabled" name="tile" value="{{ row }} {{ column }}">{{ row }} {{ column }}</button>
+                                <button class="btn d-inline border disabled" style="background-color: #C4A484;" name="tile" value="{{ row }} {{ column }}"></button>
                             {% endif %}
                         {% elif [row, column] in mine_locations %}
-                            <button class="btn btn-danger d-inline" name="tile" value="{{ row }} {{ column }}">X</button>
+                            <button class="btn btn-danger border d-inline" name="tile" value="{{ row }} {{ column }}">X</button>
                         {% else %}
-                            <button class="btn btn-success d-inline" name="tile" value="{{ row }} {{ column }}">this</button>
+                            <button class="btn btn-success border d-inline" name="tile" value="{{ row }} {{ column }}">this</button>
                         {% endif %}
                     {%  endfor %}
                     </div>
