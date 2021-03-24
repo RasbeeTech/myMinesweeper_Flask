@@ -27,6 +27,7 @@ class Minesweeper:
     def change_difficulty(self, new_difficulty):
         self.difficulty = new_difficulty
         self.mines = self.num_of_mines()
+        self.flags = self.mines
         self.mine_locations = []
         self.revealed_tiles = []
         self.indicators = []
@@ -70,13 +71,14 @@ class Minesweeper:
             self.chicken_dinner()
 
     def chicken_dinner(self):
-        return 'Winner Winner Chicken Dinner'
+        return 'Winner Winner Chicken Dinner!'
 
     def start_game(self, row, column):
         self.start_tile = [row, column]
         self.set_mines()
         self.set_indicators()
         self.reveal_tiles(row, column)
+        self.flags = self.mines
 
     def toggle_game_over(self):
         self.game_over = True
@@ -89,6 +91,7 @@ class Minesweeper:
         self.ind_number = []
         self.start_tile = []
         self.game_over = False
+        self.flags = self.mines
 
     def set_indicators(self):
         for mine in self.mine_locations:

@@ -12,6 +12,7 @@ game = Minesweeper('medium')
 #  https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
 # TODO: Add timer functions
 # TODO: Add function to decrement number of flags
+# TODO: Setup flask to send responses to javascript code
 
 indicator_style = {
     1: "color: #0000FF;",  # Blue
