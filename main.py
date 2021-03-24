@@ -6,9 +6,16 @@ app.secret_key = 'this is a secret key'
 
 game = Minesweeper('medium')
 
+# TODO: Right Click actions:
+#  https://stackoverflow.com/questions/51548401/how-to-send-out-an-ajax-request-to-flask
+#  https://www.geeksforgeeks.org/how-to-add-a-custom-right-click-menu-to-a-webpage/
+#  https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
+# TODO: Add timer functions
+# TODO: Add function to decrement number of flags
+
 indicator_style = {
     1: "color: #0000FF;",  # Blue
-    2: "color: #00FF00;",  # Green
+    2: "color: #5cb85c;",  # Green
     3: "color: #ff0000;",  # Red
     4: "color: #800080;",  # Purple
     5: "color: #800000;",  # Maroon
@@ -16,6 +23,7 @@ indicator_style = {
     7: "color: #000000;",  # Black
     8: "color: #808080;",  # Gray
 }
+
 
 # TODO: render part of template instead of entire window
 #  https://stackoverflow.com/questions/21515554/render-part-of-the-template-in-flask
@@ -55,6 +63,7 @@ def form_post():
                                    revealed_tiles=game.revealed_tiles)
         if 'tile' in keys:
             tile = request.form['tile']
+            print(tile)
             location = [int(x) for x in tile.split()]
             game.reveal_tiles(location[0], location[1])
             # print(game.mine_locations)

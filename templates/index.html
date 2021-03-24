@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        button {
+        .square-button {
             width: 40px !important;
             height: 40px !important;
             border-radius: 0 !important;
@@ -61,17 +61,17 @@
                     <div class="row flex-nowrap d-flex justify-content-center">
                     {% for column in columns %}
                         {% if revealed_tiles|length == 0 %}
-                            <button class="btn btn-success border d-inline" name="start_game" value="{{ row }} {{ column }}"></button>
+                            <button class="btn btn-success border square-button d-inline" onmousedown="WhichButton(event)" name="start_game" value="{{ row }} {{ column }}"></button>
                         {% elif [row, column] in revealed_tiles %}
                             {% if [row, column] in ind_locations %}
-                                <button class="btn d-inline border font-weight-bold disabled" style="background-color: #C4A484; {{ indicator_style[ind_number[ind_locations.index([row,column])]] }}" name="tile" value="{{ row }} {{ column }}">{{ ind_number[ind_locations.index([row,column])] }}</button>
+                                <button class="btn d-inline border square-button font-weight-bold disabled" style="background-color: #C4A484; {{ indicator_style[ind_number[ind_locations.index([row,column])]] }}" name="tile" value="{{ row }} {{ column }}">{{ ind_number[ind_locations.index([row,column])] }}</button>
                             {% else %}
-                                <button class="btn d-inline border disabled" style="background-color: #C4A484;" name="tile" value="{{ row }} {{ column }}"></button>
+                                <button class="btn d-inline square-button border disabled" style="background-color: #C4A484;" name="tile" value="{{ row }} {{ column }}"></button>
                             {% endif %}
                         {% elif [row, column] in mine_locations %}
-                            <button class="btn btn-danger border d-inline" name="tile" value="{{ row }} {{ column }}">X</button>
+                            <button class="btn btn-danger square-button border d-inline" name="tile" value="{{ row }} {{ column }}">X</button>
                         {% else %}
-                            <button class="btn btn-success border d-inline" name="tile" value="{{ row }} {{ column }}">this</button>
+                            <button class="btn btn-success square-button border d-inline" name="tile" value="{{ row }} {{ column }}"></button>
                         {% endif %}
                     {%  endfor %}
                     </div>
@@ -102,6 +102,41 @@
         </div>
         </div>
     </div>
+    <!-- Right-Click for tiles -->
+    <script>
+    function WhichButton(event) {
+      alert("You pressed button: " + event.button)
+    }
+    </script>
+    <script type="text/javascript">
+        document.oncontextmenu = rightClick;
+
+        function rightClick(clickEvent) {
+            clickEvent.preventDefault();
+
+            // return false;
+        }
+    </script>
+
+    <!-- Send POST request VIA AJAX -->
+    <h1 id="">The XMLHttpRequest Object</h1>
+
+    <button type="button" onclick="loadDoc()">Request data</button>
+
+    <p id="demo"></p>
+    <script>
+        function loadDoc() {
+          var xhttp = new XMLHttpRequest();
+          xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+              document.getElementById("demo").innerHTML = this.responseText;
+            }
+          };
+          xhttp.open("POST", "http://127.0.0.1:5000/", true);
+          xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+          xhttp.send("tile=1 1");
+        }
+    </script>
 
     {% endblock %}
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
