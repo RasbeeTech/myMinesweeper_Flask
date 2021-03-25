@@ -6,13 +6,10 @@ app.secret_key = 'this is a secret key'
 
 game = Minesweeper('medium')
 
-# TODO: Right Click actions:
-#  https://stackoverflow.com/questions/51548401/how-to-send-out-an-ajax-request-to-flask
-#  https://www.geeksforgeeks.org/how-to-add-a-custom-right-click-menu-to-a-webpage/
-#  https://www.w3schools.com/xml/ajax_xmlhttprequest_send.asp
 # TODO: Add timer functions
-# TODO: Add function to decrement number of flags
 # TODO: Setup flask to send responses to javascript code
+# TODO: Add javascript function to send and get responses from server
+#   * This will loosen dependency on javascript
 
 indicator_style = {
     1: "color: #0000FF;",  # Blue
