@@ -10,6 +10,7 @@ game = Minesweeper('medium')
 # TODO: Setup flask to send responses to javascript code
 # TODO: Add javascript function to send and get responses from server
 #   * This will loosen dependency on javascript
+#   ** Try macro templating first
 
 indicator_style = {
     1: "color: #0000FF;",  # Blue
