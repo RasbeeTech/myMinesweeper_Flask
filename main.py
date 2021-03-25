@@ -75,14 +75,18 @@ def form_post():
             game.new_game()
             return templating(game)
         if 'test_key' in keys:
-            test = {
+            '''test = {
                 "test": "test String",
                 "test2": "test String2",
                 "test3": "test String3",
                 "test4": "test String4"
+            }'''
+            # string = request.form['test_key']
+            # list = [1, 2, 3, 4, 5, 6]
+
+            test2 = {
+                "mine_locations": game.mine_locations
             }
-            string = request.form['test_key']
-            list = [1,2,3,4,5,6]
-            return string
+            return jsonify(test2)
             # return test
             # return "this is a test", ["this", "that", 12]
