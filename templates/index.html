@@ -35,7 +35,7 @@
             </div>
             <div class="nav-item">
                 <i class="fa fa-clock-o fa-3x text-warning"></i>
-                <h2 class="d-inline pl-3">0:59</h2>
+                <h2 id="timer" class="d-inline pl-3">0:59</h2>
             </div>
             <div class="nav-item dropdown">
               <a href="#" class="nav-link dropdown-toggle text-dark h3 text-capitalize" data-toggle="dropdown">{{ difficulty }}</a>
@@ -105,7 +105,6 @@
         function rightClick(clickEvent) {
             clickEvent.preventDefault();
         }
-
         function WhichButton(event, button_name, button_value, button_id) {
             if (event.button == 0) {
                 alert("You pressed button event: " + event.button);
@@ -118,13 +117,19 @@
                       //  document.getElementById("test_paragraph").innerHTML = JSON.stringify(items);
                       //}
                       var parsed = JSON.parse(item)
+                      var str = JSON.stringify(parsed.mine_locations)
+
+                      var result = Object.keys(parsed.mine_locations).map((key) => [Number(key), parsed.mine_locations[key]]);
+
                       if(typeof(item)== "string"){
-                        document.getElementById("test_paragraph").innerHTML = parsed;
+                        document.getElementById("test_paragraph").innerHTML = item;
                       }
                       //Place javascript actions in here
                       for (var key in parsed) {
-                          console.log(key);
-                          console.log(obj[key]);
+                          //match(/.{1,3}/g)
+                          document.getElementById("test_paragraph").innerHTML += key
+                          //console.log(key);
+                          //console.log(obj[key]);
                       }
                   }
                 };

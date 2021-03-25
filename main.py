@@ -28,7 +28,7 @@ def templating(the_game):
     rows = columns = the_game.play_field()
     return render_template('index.html',
                            rows=rows, columns=columns,
-                           difficulty='medium',
+                           difficulty=game.difficulty,
                            num_of_flags=the_game.mines,
                            mine_locations=the_game.mine_locations,
                            ind_locations=the_game.ind_location,
@@ -75,18 +75,17 @@ def form_post():
             game.new_game()
             return templating(game)
         if 'test_key' in keys:
-            '''test = {
-                "test": "test String",
-                "test2": "test String2",
-                "test3": "test String3",
-                "test4": "test String4"
-            }'''
-            # string = request.form['test_key']
-            # list = [1, 2, 3, 4, 5, 6]
-
             test2 = {
                 "mine_locations": game.mine_locations
             }
-            return jsonify(test2)
+            mine_locations = game.mine_locations
+            test3 = {}
+            # TODO: dict is not saving all items
+            for value in mine_locations:
+                test3[value[0]] = value[1]
+
+            print(mine_locations)
+            print(test3)
+            return jsonify(test3)
             # return test
             # return "this is a test", ["this", "that", 12]
