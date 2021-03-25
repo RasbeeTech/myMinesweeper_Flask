@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from source import Minesweeper
 
 app = Flask(__name__)
@@ -74,3 +74,15 @@ def form_post():
             #  https://stackoverflow.com/questions/54524827/how-to-show-bootstrap-modal-on-rendering-the-same-page-in-flask
             game.new_game()
             return templating(game)
+        if 'test_key' in keys:
+            test = {
+                "test": "test String",
+                "test2": "test String2",
+                "test3": "test String3",
+                "test4": "test String4"
+            }
+            string = request.form['test_key']
+            list = [1,2,3,4,5,6]
+            return string
+            # return test
+            # return "this is a test", ["this", "that", 12]
