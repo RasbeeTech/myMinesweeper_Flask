@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from source import Minesweeper
+import json
 
 app = Flask(__name__)
 app.secret_key = 'this is a secret key'
@@ -79,13 +80,7 @@ def form_post():
                 "mine_locations": game.mine_locations
             }
             mine_locations = game.mine_locations
-            test3 = {}
-            # TODO: dict is not saving all items
-            for value in mine_locations:
-                test3[value[0]] = value[1]
 
-            print(mine_locations)
-            print(test3)
-            return jsonify(test3)
-            # return test
-            # return "this is a test", ["this", "that", 12]
+            print("mine_locations:", mine_locations)
+            return json.dumps(test2)
+            # return jsonify(test2)

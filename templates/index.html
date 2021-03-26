@@ -61,7 +61,7 @@
                             {% if [row, column] in ind_locations %}
                                 <button class="btn d-inline border square-button font-weight-bold disabled" style="background-color: #C4A484; {{ indicator_style[ind_number[ind_locations.index([row,column])]] }}" name="tile" value="{{ row }} {{ column }}">{{ ind_number[ind_locations.index([row,column])] }}</button>
                             {% else %}
-                                <button class="btn d-inline square-button border disabled" style="background-color: #C4A484;" name="tile" value="{{ row }} {{ column }}"></button>
+                                <button class="btn d-inline square-button border disabled" style="background-color: #C4A484;" name="tile" value="{{ row }},{{ column }}"></button>
                             {% endif %}
                         {% elif [row, column] in mine_locations %}
                             <button class="btn btn-danger square-button border d-inline" onmousedown="WhichButton(event,this.name,this.value,this.id)" id="{{ row }} {{ column }}" name="tile" value="{{ row }} {{ column }}">X</i></button>
@@ -99,6 +99,8 @@
     </div>
 
     <p id="test_paragraph">this should change</p>
+    <p id="test_paragraph2">this should change</p>
+    <p id="test_paragraph3">this should change</p>
     <script>
         document.oncontextmenu = rightClick;
 
@@ -111,25 +113,23 @@
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function() {
                   if (this.readyState == 4 && this.status == 200) {
-                      var item = this.responseText
-                      //var item = JSON.parse(items)
-                      //for (var key in item) {
-                      //  document.getElementById("test_paragraph").innerHTML = JSON.stringify(items);
-                      //}
-                      var parsed = JSON.parse(item)
-                      var str = JSON.stringify(parsed.mine_locations)
+                      var item = this.responseText;
+                      var item_parsed = JSON.parse(item);
+                      var item_key = Object.keys(item_parsed);
 
-                      var result = Object.keys(parsed.mine_locations).map((key) => [Number(key), parsed.mine_locations[key]]);
+                      var item_value = item_parsed[item_key[0]];
 
-                      if(typeof(item)== "string"){
-                        document.getElementById("test_paragraph").innerHTML = item;
-                      }
-                      //Place javascript actions in here
-                      for (var key in parsed) {
-                          //match(/.{1,3}/g)
-                          document.getElementById("test_paragraph").innerHTML += key
-                          //console.log(key);
-                          //console.log(obj[key]);
+                      for (var key in item_parsed) {
+                        if (key == "mine_locations") {
+                            document.getElementById("test_paragraph").innerHTML = item_key[0];
+                            document.getElementById("test_paragraph2").innerHTML = "values: ";
+
+                            for (let i = 0; i < item_value.length; i++) {
+                                document.getElementById("test_paragraph2").innerHTML += item_value[i];
+                                document.getElementById(item_value[i]).className = "btn btn-warning square-button border d-inline";
+                            }
+
+                        }
                       }
                   }
                 };
@@ -160,7 +160,6 @@
                 var flag_icon = "<i class='fa fa-flag fa-1x text-dark'></i>"
                 document.getElementById(button_id).innerHTML = flag_icon;
             }
-
         }
     </script>
     {% endblock %}
