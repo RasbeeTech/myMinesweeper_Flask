@@ -8,11 +8,8 @@ app.secret_key = 'this is a secret key'
 game = Minesweeper('medium')
 
 # TODO: Add timer functions
-# TODO: Setup flask to send responses to javascript code
-# TODO: Add javascript function to send and get responses from server
-#   * This will loosen dependency on javascript
-#   ** Try macro templating first
-
+# TODO: get all elements by name and change it to 'tile'
+#   https://stackoverflow.com/questions/10306129/javascript-get-element-by-name
 indicator_style = {
     1: "color: #0000FF;",  # Blue
     2: "color: #5cb85c;",  # Green
@@ -38,11 +35,11 @@ def templating(the_game):
                            revealed_tiles=the_game.revealed_tiles)
 
 
-# TODO: render part of template instead of entire window
-#  https://stackoverflow.com/questions/21515554/render-part-of-the-template-in-flask
 @app.route('/')
 def index():
-    return templating(game)
+    rows = columns = game.play_field()
+    return render_template('index.html', rows=rows, columns=columns, difficulty=game.difficulty, num_of_flags=game.mines)
+    # return templating(game)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -71,8 +68,6 @@ def form_post():
             game.toggle_game_over()
             return '', 204  # HTTP empty response
         if 'new_game' in keys:
-            # TODO: flask controlled Modal:
-            #  https://stackoverflow.com/questions/54524827/how-to-show-bootstrap-modal-on-rendering-the-same-page-in-flask
             game.new_game()
             return templating(game)
         if 'test_key' in keys:

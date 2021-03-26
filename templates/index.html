@@ -31,21 +31,21 @@
         <nav class="nav nav-pills nav-fill mt-3 bg-success">
             <div class="nav-item">
                 <i class="fa fa-flag fa-3x text-danger"></i>
-                <h2 id="num_of_flags_remaining"class="d-inline pl-4">{{ num_of_flags }}</h2>
+                <h2 id="num_of_flags_remaining" class="d-inline pl-4">{{ num_of_flags }}</h2>
             </div>
             <div class="nav-item">
                 <i class="fa fa-clock-o fa-3x text-warning"></i>
                 <h2 id="timer" class="d-inline pl-3">0:59</h2>
             </div>
             <div class="nav-item dropdown">
-              <a href="#" class="nav-link dropdown-toggle text-dark h3 text-capitalize" data-toggle="dropdown">{{ difficulty }}</a>
-              <div class="dropdown-menu">
-                  <form method="post">
-                      <button class="btn dropdown-item" type="submit" name="difficulty" value="easy">Easy</button>
-                      <button class="btn dropdown-item" type="submit" name="difficulty" value="medium">Medium</button>
-                      <button class="btn dropdown-item" type="submit" name="difficulty" value="hard">Hard</button>
-                  </form>
-              </div>
+                <a href="#" class="nav-link dropdown-toggle text-dark h3 text-capitalize" data-toggle="dropdown">{{ difficulty }}</a>
+                <div class="dropdown-menu">
+                    <form method="post">
+                        <button class="btn dropdown-item" type="submit" name="difficulty" value="easy">Easy</button>
+                        <button class="btn dropdown-item" type="submit" name="difficulty" value="medium">Medium</button>
+                        <button class="btn dropdown-item" type="submit" name="difficulty" value="hard">Hard</button>
+                    </form>
+                </div>
           </div>
         </nav>
         <!-- Game Display -->
@@ -54,20 +54,7 @@
                 {% for row in rows %}
                     <div class="row flex-nowrap d-flex justify-content-center">
                     {% for column in columns %}
-                        <!-- Remove IF statements and just create grid with ids -->
-                        {% if revealed_tiles|length == 0 %}
-                            <button class="btn btn-success border square-button d-inline" name="start_game" value="{{ row }} {{ column }}"></button>
-                        {% elif [row, column] in revealed_tiles %}
-                            {% if [row, column] in ind_locations %}
-                                <button class="btn d-inline border square-button font-weight-bold disabled" style="background-color: #C4A484; {{ indicator_style[ind_number[ind_locations.index([row,column])]] }}" name="tile" value="{{ row }} {{ column }}">{{ ind_number[ind_locations.index([row,column])] }}</button>
-                            {% else %}
-                                <button class="btn d-inline square-button border disabled" style="background-color: #C4A484;" name="tile" value="{{ row }} {{ column }}"></button>
-                            {% endif %}
-                        {% elif [row, column] in mine_locations %}
-                            <button class="btn btn-danger square-button border d-inline" onmousedown="WhichButton(event,this.name,this.value,this.id)" id="{{ row }},{{ column }}" name="tile" value="{{ row }} {{ column }}">X</i></button>
-                        {% else %}
-                            <button class="btn btn-success square-button border d-inline" name="tile" value="{{ row }} {{ column }}"></button>
-                        {% endif %}
+                        <button class="btn btn-success square-button border d-inline" onmousedown="WhichButton(event,this.name,this.value,this.id)" id="{{ row }},{{ column }}" name="tile" value="{{ row }} {{ column }}"> </button>
                     {%  endfor %}
                     </div>
                 {%  endfor %}
@@ -133,9 +120,13 @@
                       }
                   }
                 };
+                document.getElementById("test_paragraph3").innerHTML = button_name;
+
                 xhttp.open("POST", "http://127.0.0.1:5000/", true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                xhttp.send("test_key=test_value");
+                var test_key = "test_key";
+                var test_value = "test_value";
+                xhttp.send(test_key + "=" + test_value);
             }
             else if (event.button == 2) {
                 alert("You pressed button event: " + event.button);
@@ -155,9 +146,19 @@
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhttp.send("tile="+button_value);
 
+
                 var flags_remaining = document.getElementById("num_of_flags_remaining").innerHTML;
-                document.getElementById("num_of_flags_remaining").innerHTML = parseInt(flags_remaining) - 1;
-                var flag_icon = "<i class='fa fa-flag fa-1x text-dark'></i>"
+                var flag_icon = "<i class='fa fa-flag fa-1x text-dark'></i>";
+
+                // Below if-statement does not work
+                if (document.getElementById(button_id).innerHTML == flag_icon) {
+                    document.getElementById(button_id).innerHTML = "";
+                    document.getElementById("num_of_flags_remaining").innerHTML = parseInt(flags_remaining) + 1;
+                }
+                else {
+                    document.getElementById(button_id).innerHTML = flag_icon;
+                    document.getElementById("num_of_flags_remaining").innerHTML = parseInt(flags_remaining) - 1;
+                }
                 document.getElementById(button_id).innerHTML = flag_icon;
             }
         }
