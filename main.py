@@ -49,28 +49,31 @@ def form_post():
             tile = request.form['tile']
             print(tile)
             location = [int(x) for x in tile.split()]
-            print("revealed 1:", game.revealed_tiles)
-            game.reveal_tiles(location[0], location[1])
-            print("revealed 2:", game.revealed_tiles)
-            revealed_ind_location, revealed_ind_number = game.get_revealed_indicators()
-            data = {
-                "revealed_tiles": game.revealed_tiles,
-                "ind_location": revealed_ind_location,
-                "ind_number": revealed_ind_number
-            }
-            return json.dumps(data)
+            if [location[0], location[1]] not in game.mine_locations:
+                # print("revealed 1:", game.revealed_tiles)
+                game.reveal_tiles(location[0], location[1])
+                # print("revealed 2:", game.revealed_tiles)
+                revealed_ind_location, revealed_ind_number = game.get_revealed_indicators()
+                data = {
+                    "revealed_tiles": game.revealed_tiles,
+                    "ind_location": revealed_ind_location,
+                    "ind_number": revealed_ind_number
+                }
+                return json.dumps(data)
+            else:
+                print("game over")
+                data = {
+                    "game_over": "Game Over",
+                    "mine_locations": game.mine_locations
+                }
+                return json.dumps(data)
         if 'start_game' in keys:
             tile = request.form['start_game']
             location = [int(x) for x in tile.split()]
             game.start_game(location[0], location[1])
             return templating(game)
-
-        if 'mine_tile' in keys:
-            game.toggle_game_over()
+        if 'game_over' in keys:
             return '', 204  # HTTP empty response
-        if 'new_game' in keys:
-            game.new_game()
-            return templating(game)
         if 'test_key' in keys:
             test2 = {
                 "mine_locations": game.mine_locations
