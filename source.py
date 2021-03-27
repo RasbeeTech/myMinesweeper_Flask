@@ -16,6 +16,7 @@ class Minesweeper:
 
         self.start_tile = []
         self.game_over = False
+        self.is_started = False
 
     def num_of_mines(self):
         return {
@@ -35,6 +36,7 @@ class Minesweeper:
         self.ind_number = []
         self.start_tile = []
         self.game_over = False
+        self.is_started = False
 
     def play_field(self):
         if self.difficulty == 'easy':
@@ -52,7 +54,7 @@ class Minesweeper:
         while mines_planted < num_of_mines:
             row = random.choice(self.play_field())
             col = random.choice(self.play_field())
-            if [row, col] not in mine_tiles and [row, col] not in self.start_tile:
+            if [row, col] not in mine_tiles and [row, col] != self.start_tile:
                 mine_tiles.append([row, col])
                 mines_planted += 1
         self.mine_locations = mine_tiles
@@ -67,7 +69,7 @@ class Minesweeper:
                 self.revealed_tiles.append([row, column])
                 self.check_adjacent(row, column, self.reveal_tiles)
         play_field = max(self.play_field())
-        if (len(self.mine_locations)+len(self.revealed_tiles)) == (play_field*play_field):
+        if (len(self.mine_locations) + len(self.revealed_tiles)) == (play_field * play_field):
             self.chicken_dinner()
 
     def chicken_dinner(self):
@@ -79,6 +81,7 @@ class Minesweeper:
         self.set_indicators()
         self.reveal_tiles(row, column)
         self.flags = self.mines
+        self.is_started = True
 
     def toggle_game_over(self):
         self.game_over = True
@@ -168,22 +171,26 @@ class Minesweeper:
             func(r + 1, c)
             func(r + 1, c + 1)
 
+    def get_revealed_indicators(self):
+        revealed = self.revealed_tiles
+        ind_locations = self.ind_location
+        ind_numbers = self.ind_number
+
+        revealed_ind_locations = []
+        revealed_ind_numbers = []
+        for tile in revealed:
+            if tile in ind_locations:
+                revealed_ind_locations.append(tile)
+                revealed_ind_numbers.append(ind_numbers[ind_locations.index(tile)])
+        return revealed_ind_locations, revealed_ind_numbers
+
 
 if __name__ == '__main__':
     print('Minesweeper')
     game = Minesweeper('medium')
-    print(game.num_of_mines())
-    print(game.play_field())
-    print(game.mine_locations)
-    game.change_difficulty('easy')
-    print(game.mine_locations)
-    game.set_indicators()
-    print(game.indicators)
 
-    print("length:", len(game.ind_location), ":", game.ind_location)
-    print("length:", len(game.ind_number), ":", game.ind_number)
+    game.start_game(4, 4)
+    print('revealed:', game.revealed_tiles)
+    print('mines:', game.mine_locations)
 
-    game.reveal_tiles(4, 4)
-    print(game.revealed_tiles)
-
-    print("mines: ", game.mine_locations)
+    print(game.get_revealed_indicators())

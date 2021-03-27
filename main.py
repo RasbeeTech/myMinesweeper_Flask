@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from source import Minesweeper
 import json
 
@@ -10,17 +10,6 @@ game = Minesweeper('medium')
 # TODO: Add timer functions
 # TODO: get all elements by name and change it to 'tile'
 #   https://stackoverflow.com/questions/10306129/javascript-get-element-by-name
-indicator_style = {
-    1: "color: #0000FF;",  # Blue
-    2: "color: #5cb85c;",  # Green
-    3: "color: #ff0000;",  # Red
-    4: "color: #800080;",  # Purple
-    5: "color: #800000;",  # Maroon
-    6: "color: #30D5C8;",  # Turquoise
-    7: "color: #000000;",  # Black
-    8: "color: #808080;",  # Gray
-}
-
 
 def templating(the_game):
     rows = columns = the_game.play_field()
@@ -31,14 +20,19 @@ def templating(the_game):
                            mine_locations=the_game.mine_locations,
                            ind_locations=the_game.ind_location,
                            ind_number=the_game.ind_number,
-                           indicator_style=indicator_style,
-                           revealed_tiles=the_game.revealed_tiles)
+                           revealed_tiles=the_game.revealed_tiles,
+                           game_started=the_game.is_started)
 
 
 @app.route('/')
 def index():
     rows = columns = game.play_field()
-    return render_template('index.html', rows=rows, columns=columns, difficulty=game.difficulty, num_of_flags=game.mines)
+    return render_template('index.html',
+                           rows=rows,
+                           columns=columns,
+                           difficulty=game.difficulty,
+                           num_of_flags=game.mines,
+                           game_started=game.is_started)
     # return templating(game)
 
 
@@ -55,15 +49,22 @@ def form_post():
             tile = request.form['tile']
             print(tile)
             location = [int(x) for x in tile.split()]
+            print("revealed 1:", game.revealed_tiles)
             game.reveal_tiles(location[0], location[1])
-            # print(game.mine_locations)
-            # print(game.revealed_tiles)
-            return templating(game)
+            print("revealed 2:", game.revealed_tiles)
+            revealed_ind_location, revealed_ind_number = game.get_revealed_indicators()
+            data = {
+                "revealed_tiles": game.revealed_tiles,
+                "ind_location": revealed_ind_location,
+                "ind_number": revealed_ind_number
+            }
+            return json.dumps(data)
         if 'start_game' in keys:
             tile = request.form['start_game']
             location = [int(x) for x in tile.split()]
             game.start_game(location[0], location[1])
             return templating(game)
+
         if 'mine_tile' in keys:
             game.toggle_game_over()
             return '', 204  # HTTP empty response
