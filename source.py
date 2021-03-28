@@ -20,9 +20,9 @@ class Minesweeper:
 
     def num_of_mines(self):
         return {
-            'easy': 8,
-            'medium': 15,
-            'hard': 30
+            'easy': 5,
+            'medium': 10,
+            'hard': 20
         }[self.difficulty]
 
     def change_difficulty(self, new_difficulty):
@@ -68,12 +68,11 @@ class Minesweeper:
             elif [row, column] not in self.mine_locations and [row, column] not in self.ind_location:
                 self.revealed_tiles.append([row, column])
                 self.check_adjacent(row, column, self.reveal_tiles)
-        play_field = max(self.play_field())
-        if (len(self.mine_locations) + len(self.revealed_tiles)) == (play_field * play_field):
-            self.chicken_dinner()
 
     def chicken_dinner(self):
-        return 'Winner Winner Chicken Dinner!'
+        play_field = len(self.play_field())
+        if (len(self.mine_locations) + len(self.revealed_tiles)) == (play_field * play_field):
+            return "Winner Winner"
 
     def start_game(self, row, column):
         self.start_tile = [row, column]
@@ -194,3 +193,4 @@ if __name__ == '__main__':
     print('mines:', game.mine_locations)
 
     print(game.get_revealed_indicators())
+    game.chicken_dinner()

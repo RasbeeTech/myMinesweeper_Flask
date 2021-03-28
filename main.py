@@ -50,15 +50,21 @@ def form_post():
             print(tile)
             location = [int(x) for x in tile.split()]
             if [location[0], location[1]] not in game.mine_locations:
-                # print("revealed 1:", game.revealed_tiles)
                 game.reveal_tiles(location[0], location[1])
-                # print("revealed 2:", game.revealed_tiles)
                 revealed_ind_location, revealed_ind_number = game.get_revealed_indicators()
-                data = {
-                    "revealed_tiles": game.revealed_tiles,
-                    "ind_location": revealed_ind_location,
-                    "ind_number": revealed_ind_number
-                }
+                if game.chicken_dinner() == "Winner Winner":
+                    data = {
+                        "Winner_Winner": "Chicken Dinner",
+                        "revealed_tiles": game.revealed_tiles,
+                        "ind_location": revealed_ind_location,
+                        "ind_number": revealed_ind_number
+                    }
+                else:
+                    data = {
+                        "revealed_tiles": game.revealed_tiles,
+                        "ind_location": revealed_ind_location,
+                        "ind_number": revealed_ind_number
+                    }
                 return json.dumps(data)
             else:
                 print("game over")
@@ -77,6 +83,7 @@ def form_post():
             revealed_ind_location, revealed_ind_number = game.get_revealed_indicators()
             data = {
                 "start_game": [game.start_tile],
+                "revealed_tiles": game.revealed_tiles,
                 "ind_location": revealed_ind_location,
                 "ind_number": revealed_ind_number
             }
