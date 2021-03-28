@@ -13,8 +13,6 @@ var indicator_style = {
     8: "#808080",  // Gray
 }
 function new_game(button_name, button_value) {
-    //alert("button_name: " + button_name);
-    //alert("button_value: " + button_value);
     $('#game-over-modal').modal('hide');
     var xhttp = new XMLHttpRequest();
     xhttp.open("POST", "http://127.0.0.1:5000/", true);
@@ -26,9 +24,7 @@ function start_game(button_name, button_value, button_id) {
         if (this.readyState == 4 && this.status == 200) {
             var item = this.responseText;
             var item_parsed = JSON.parse(item);
-            //alert(item_parsed);
             if ('start_game' in item_parsed) {
-                //alert("started");
                 var tile_nodes = document.getElementsByName("start_game");
                 var tile_array = Array.prototype.slice.call(tile_nodes);
                 for (let i = 0; i < tile_array.length; i++) {
@@ -67,7 +63,6 @@ function WhichButton(event, button_name, button_value, button_id) {
         if (button_name == "start_game") {
             start_game(button_name, button_value, button_id);
         } else if (button_name == "tile") {
-            //alert("You pressed button event: " + event.button);
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
@@ -127,8 +122,6 @@ function WhichButton(event, button_name, button_value, button_id) {
     }
     else if (event.button == 2) {
         if (button_name != "start_game"){
-            //alert("You pressed button event: " + event.button);
-
             var flags_remaining = document.getElementById("num_of_flags_remaining").innerHTML;
             var flag_icon = "<i class='fa fa-flag fa-1x text-dark'></i>";
 
