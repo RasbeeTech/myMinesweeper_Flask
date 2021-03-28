@@ -7,10 +7,8 @@ app.secret_key = 'this is a secret key'
 
 game = Minesweeper('medium')
 
-# TODO: Add timer functions
-# TODO: get all elements by name and change it to 'tile'
-#   https://stackoverflow.com/questions/10306129/javascript-get-element-by-name
 
+# TODO: Add timer functions
 def templating(the_game):
     rows = columns = the_game.play_field()
     return render_template('index.html',
@@ -21,6 +19,7 @@ def templating(the_game):
                            ind_locations=the_game.ind_location,
                            ind_number=the_game.ind_number,
                            revealed_tiles=the_game.revealed_tiles,
+                           start_tile=game.start_tile,
                            game_started=the_game.is_started)
 
 
@@ -32,6 +31,7 @@ def index():
                            columns=columns,
                            difficulty=game.difficulty,
                            num_of_flags=game.mines,
+                           start_tile=game.start_tile,
                            game_started=game.is_started)
     # return templating(game)
 
@@ -67,11 +67,21 @@ def form_post():
                     "mine_locations": game.mine_locations
                 }
                 return json.dumps(data)
+        if 'new_game' in keys:
+            game.new_game()
+            return templating(game)
         if 'start_game' in keys:
             tile = request.form['start_game']
             location = [int(x) for x in tile.split()]
             game.start_game(location[0], location[1])
-            return templating(game)
+            revealed_ind_location, revealed_ind_number = game.get_revealed_indicators()
+            data = {
+                "start_game": [game.start_tile],
+                "ind_location": revealed_ind_location,
+                "ind_number": revealed_ind_number
+            }
+            return json.dumps(data)
+            # return templating(game)
         if 'game_over' in keys:
             return '', 204  # HTTP empty response
         if 'test_key' in keys:

@@ -17,13 +17,13 @@
               <span class="navbar-toggler-icon"></span>
           </button>
 
-          <div class="collapse navbar-collapse" id="navbarCollapse">
+          <!--<div class="collapse navbar-collapse" id="navbarCollapse">
               <div class="navbar-nav ml-auto">
                   <a href="#" class="nav-item nav-link text-success">New Game</a>
                   <a href="#" class="nav-item nav-link text-warning">Top Scores</a>
                   <a href="#" class="nav-item nav-link text-danger">Quit</a>
               </div>
-          </div>
+          </div> -->
       </nav>
     <!-- Content -->
     <div class="container">
@@ -50,19 +50,13 @@
         </nav>
         <!-- Game Display -->
         <div class="container border mt-3 mx-0">
-            {% if game_started == false %}<form method="post">{% endif %}
                 {% for row in rows %}
                     <div class="row flex-nowrap d-flex justify-content-center">
                     {% for column in columns %}
-                        {% if game_started == false %}
-                        <button class="btn btn-warning square-button border d-inline" name="start_game" value="{{ row }} {{ column }}"> </button>
-                        {% else %}
-                        <button class="btn btn-success square-button border d-inline" onmousedown="WhichButton(event,this.name,this.value,this.id)" id="{{ row }},{{ column }}" name="tile" value="{{ row }} {{ column }}"> </button>
-                        {% endif %}
+                        <button class="btn btn-success square-button border d-inline" onmousedown="WhichButton(event,this.name,this.value,this.id)" name="start_game" id="{{ row }},{{ column }}" value="{{ row }} {{ column }}"></button>
                     {%  endfor %}
                     </div>
                 {%  endfor %}
-            {% if game_started == false %}</form>{% endif %}
         </div>
     </div>
     <!-- Game over Modal -->
@@ -77,10 +71,8 @@
                 <p>Try again?</p>
             </div>
             <div class="modal-footer">
-                <form method="post">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-primary" name="new_game" value="new_game">Yes</button>
-                </form>
+                    <button type="button" class="btn btn-primary" onClick="new_game(this.name, this.value)" name="new_game" value="new_game">Yes</button>
             </div>
         </div>
         </div>
@@ -102,77 +94,107 @@
             7: "#000000",  // Black
             8: "#808080",  // Gray
         }
+        function new_game(button_name, button_value) {
+            alert("button_name: " + button_name);
+            alert("button_value: " + button_value);
+            $('#game-over-modal').modal('hide');
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("POST", "http://127.0.0.1:5000/", true);
+            xhttp.send(button_name + "=" + button_value);
+        }
+        function start_game(button_name, button_value, button_id) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var item = this.responseText;
+                    var item_parsed = JSON.parse(item);
+                    alert(item_parsed);
+                    if ('start_game' in item_parsed) {
+                        alert("started");
+                        var tile_nodes = document.getElementsByName("start_game");
+                        var tile_array = Array.prototype.slice.call(tile_nodes);
+                        for (let i = 0; i < tile_array.length; i++) {
+                            tile_array[i].name = "tile";
+                            //tile_array[i].onmousedown = "WhichButton(event,this.name,this.value,this.id)";
+                            tile_array[i].className = "btn btn-success square-button border d-inline";
+                        }
+                    }
+                    if ("ind_location" in item_parsed) {
+                        var ind_locations = item_parsed["ind_location"];
+                        if ("ind_number" in item_parsed) {
+                            var ind_number = item_parsed["ind_number"];
+                            for (let i = 0; i < ind_number.length; i++) {
+                                document.getElementById(ind_locations[i]).innerHTML = ind_number[i];
+                                document.getElementById(ind_locations[i]).style.color = indicator_style[ind_number[i]];
+                            }
+                        }
+                    }
+                    document.getElementById(button_id).style.backgroundColor = "#C4A484";
+                }
+            }
+            xhttp.open("POST", "http://127.0.0.1:5000/", true);
+            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xhttp.send(button_name + "=" + button_value);
+        }
 
         function WhichButton(event, button_name, button_value, button_id) {
             if (event.button == 0) {
-                alert("You pressed button event: " + event.button);
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        var item = this.responseText;
-                        var item_parsed = JSON.parse(item);
-                        var item_key = Object.keys(item_parsed);
+                if (button_name == "start_game") {
+                    start_game(button_name, button_value, button_id);
+                } else {
+                    alert("You pressed button event: " + event.button);
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            var item = this.responseText;
+                            var item_parsed = JSON.parse(item);
+                            var item_key = Object.keys(item_parsed);
 
-                        var item_value = item_parsed[item_key[0]];
+                            var item_value = item_parsed[item_key[0]];
 
-                        if ("revealed_tiles" in item_parsed) {
-                            var value = item_parsed["revealed_tiles"];
-                            for (let i=0; i < value.length; i++) {
-                                    document.getElementById(value[i]).className = "btn square-button border d-inline font-weight-bold";
-                                    document.getElementById(value[i]).style.backgroundColor = "#C4A484";
-                                }
-                        }
-                        if ("ind_location" in item_parsed) {
-                            var ind_locations = item_parsed["ind_location"];
-                            if ("ind_number" in item_parsed) {
-                                var ind_number = item_parsed["ind_number"];
-                                for (let i = 0; i < ind_number.length; i++) {
-                                    document.getElementById(ind_locations[i]).innerHTML = ind_number[i];
-                                    document.getElementById(ind_locations[i]).style.color = indicator_style[ind_number[i]];
+                            if ("revealed_tiles" in item_parsed) {
+                                var value = item_parsed["revealed_tiles"];
+                                for (let i=0; i < value.length; i++) {
+                                        document.getElementById(value[i]).className = "btn square-button border d-inline font-weight-bold";
+                                        document.getElementById(value[i]).style.backgroundColor = "#C4A484";
                                 }
                             }
-                        }
-                        if ("game_over" in item_parsed) {
-                            if ("mine_locations" in item_parsed) {
-                                var mine_locations = item_parsed["mine_locations"];
-                                for (let i = 0; i < mine_locations.length; i++) {
-                                    document.getElementById(mine_locations[i]).className = "btn square-button border d-inline bg-danger";
+                            if ("ind_location" in item_parsed) {
+                                var ind_locations = item_parsed["ind_location"];
+                                if ("ind_number" in item_parsed) {
+                                    var ind_number = item_parsed["ind_number"];
+                                    for (let i = 0; i < ind_number.length; i++) {
+                                        document.getElementById(ind_locations[i]).innerHTML = ind_number[i];
+                                        document.getElementById(ind_locations[i]).style.color = indicator_style[ind_number[i]];
+                                    }
                                 }
                             }
-                            var tile_nodes = document.getElementsByName("tile");
-                            var tile_array = Array.prototype.slice.call(tile_nodes);
-                            for (let i = 0; i < tile_array.length; i++) {
-                                tile_array[i].name = "game_over";
+                            if ("game_over" in item_parsed) {
+                                if ("mine_locations" in item_parsed) {
+                                    var mine_locations = item_parsed["mine_locations"];
+                                    for (let i = 0; i < mine_locations.length; i++) {
+                                        document.getElementById(mine_locations[i]).className = "btn square-button border d-inline bg-danger";
+                                    }
+                                }
+                                var tile_nodes = document.getElementsByName("tile");
+                                var tile_array = Array.prototype.slice.call(tile_nodes);
+                                for (let i = 0; i < tile_array.length; i++) {
+                                    tile_array[i].name = "game_over";
+                                }
+                                $('#game-over-modal').modal('show');
                             }
-                            $('#game-over-modal').modal('show');
                         }
-                    }
-                };
-                xhttp.open("POST", "http://127.0.0.1:5000/", true);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                var test_key = "test_key";
-                var test_value = "test_value";
-                xhttp.send(button_name + "=" + button_value);
+                    };
+                    xhttp.open("POST", "http://127.0.0.1:5000/", true);
+                    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    var test_key = "test_key";
+                    var test_value = "test_value";
+                    xhttp.send(button_name + "=" + button_value);
+                }
             }
             else if (event.button == 2) {
                 alert("You pressed button event: " + event.button);
-                //alert("You pressed button name: " + button_name);
-                //alert("You pressed button value: " + button_value);
-                //alert("You pressed button id: " + button_id);
-
-                var xhttp = new XMLHttpRequest();
-
-                //xhttp.onreadystatechange = function() {
-                //  if (this.readyState == 4 && this.status == 200) {
-                //      document.getElementById("demo").innerHTML = this.responseText;
-                //  }
-                //};
-
-                xhttp.open("POST", "http://127.0.0.1:5000/", true);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                //xhttp.send("tile="+button_value);
-
-
+                
                 var flags_remaining = document.getElementById("num_of_flags_remaining").innerHTML;
                 var flag_icon = "<i class='fa fa-flag fa-1x text-dark'></i>";
 
