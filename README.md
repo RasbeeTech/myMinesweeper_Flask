@@ -3,8 +3,8 @@
  A simple Web-Application to play Minesweeper created with Flask framework.
  
  ## About
- Back-end: Python
- Front-end: Javascript
+ Back-end: Python  
+ Front-end: Javascript  
  
  ## Dependencies
  
@@ -23,9 +23,9 @@
  The rules of the game are fairly simple.  Uncover tiles and use indicators to avoid mines.  To win, uncover all tiles that do not have mines.  The numbered indicators represent the amount of mines in the adjacent tiles.
  
  ## How to play
- 1. Left click tile to reveal tile.  
- 2. Right click to flag mine locations.  
- 3. To change difficulty or restart game just choose the difficulty level.
+ * Left-click: tile to reveal tile.  
+ * Right-click: to flag mine locations.  
+ * To change difficulty or restart game just choose the difficulty level.
  
  ## Run()
  To run the application:
