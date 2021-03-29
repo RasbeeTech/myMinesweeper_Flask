@@ -2,13 +2,17 @@
  
  A simple Web-Application to play Minesweeper created with Flask framework.
  
+ ## About
+ Back-end: Python
+ Front-end: Javascript
+ 
  ## Dependencies
  
- Python version: 3.8.7  
+ Python version: 3.8.7
  Flask version: 1.1.2  
  Jinja2  
  HTML5  
- Javascript  
+ Javascript
  
  ## Sample Images
  Start screen                 |  Game play
