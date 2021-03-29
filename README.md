@@ -4,13 +4,16 @@
  
  ## Dependencies
  
- Python version: 3.8.7
- Flask version: 1.1.2
- Jinja2
- HTML5
- Javascript
+ Python version: 3.8.7  
+ Flask version: 1.1.2  
+ Jinja2  
+ HTML5  
+ Javascript  
  
  ## Sample Images
+ Solarized dark             |  Solarized Ocean
+ :-------------------------:|:-------------------------:
+ ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_1.png))  |  ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_2.png)
  
  ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_1.png)
  ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_2.png)
