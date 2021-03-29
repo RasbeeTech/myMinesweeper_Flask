@@ -29,13 +29,13 @@
  
  ## Run()
  To run the application:
- 1. With your choice of command line interface, navigate to directory containing main.py.
+ 1. With your choice of command line interface, navigate to directory containing 'main.py'.
  2. Type and enter the following script
  ```bash
  User:$ run(): FLASK_APP=main.py flask run
  ```
  3. Once entered, you should see the following in your CLI:
  ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_3.png)
- 4. In Google Chrome or your choice of browser, enter http://127.0.0.1:5000 into the address bar.
+ 4. In Google Chrome or your choice of browser, enter 'http://127.0.0.1:5000' into the address bar.
  5. Have fun!
  
