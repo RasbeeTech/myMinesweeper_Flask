@@ -11,9 +11,8 @@
  Javascript  
  
  ## Sample Images
- Solarized dark             |  Solarized Ocean
  :-------------------------:|:-------------------------:
- ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_1.png))  |  ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_2.png)
+ ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_1.png)  |  ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_2.png)
  
  ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_1.png)
  ![alt text](https://github.com/RasbeeTech/Minesweeper_Flask/blob/main/readme_images/sample_image_2.png)
