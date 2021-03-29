@@ -1,7 +1,10 @@
 function rightClick(clickEvent) {
     clickEvent.preventDefault();
 }
+// Disables right-clicking on webpage
+document.oncontextmenu = rightClick;
 
+// Color codes for mine indicators:
 var indicator_style = {
     1: "#0000FF",  // Blue
     2: "#5cb85c",  // Green
@@ -12,6 +15,7 @@ var indicator_style = {
     7: "#000000",  // Black
     8: "#808080",  // Gray
 }
+// starts a new game
 function new_game(button_name, button_value) {
     $('#game-over-modal').modal('hide');
     var xhttp = new XMLHttpRequest();
@@ -56,6 +60,7 @@ function start_game(button_name, button_value, button_id) {
     xhttp.open("POST", "http://127.0.0.1:5000/", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(button_name + "=" + button_value);
+    startTimer();
 }
 
 function WhichButton(event, button_name, button_value, button_id) {
@@ -101,6 +106,7 @@ function WhichButton(event, button_name, button_value, button_id) {
                         for (let i = 0; i < tile_array.length; i++) {
                             tile_array[i].name = "game_over";
                         }
+                        stopTimer();
                         alert("Game Over");
                     }
                     if ("Winner_Winner" in item_parsed) {
@@ -109,6 +115,7 @@ function WhichButton(event, button_name, button_value, button_id) {
                         for (let i = 0; i < tile_array.length; i++) {
                             tile_array[i].name = "winner_winner";
                         }
+                        stopTimer();
                         alert("Winner Winner!");
                     }
                 }
@@ -138,4 +145,27 @@ function WhichButton(event, button_name, button_value, button_id) {
             }
         }
     }
-}document.oncontextmenu = rightClick;
+}
+var duration = document.getElementById("timer"),
+    seconds = 0, minutes = 0,
+    t;
+
+function add() {
+    seconds ++;
+    if (seconds >= 60) {
+        seconds = 0;
+        minutes++;
+    }
+    duration.textContent = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+    timer();
+}
+function timer() {
+    t = setTimeout(add, 1000);
+}
+
+function startTimer() {
+    timer();
+}
+function stopTimer() {
+    clearTimeout(t);
+}
