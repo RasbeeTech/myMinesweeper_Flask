@@ -15,13 +15,6 @@ var indicator_style = {
     7: "#000000",  // Black
     8: "#808080",  // Gray
 }
-// starts a new game
-function new_game(button_name, button_value) {
-    $('#game-over-modal').modal('hide');
-    var xhttp = new XMLHttpRequest();
-    xhttp.open("POST", "http://127.0.0.1:5000/", true);
-    xhttp.send(button_name + "=" + button_value);
-}
 function start_game(button_name, button_value, button_id) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -33,27 +26,10 @@ function start_game(button_name, button_value, button_id) {
                 var tile_array = Array.prototype.slice.call(tile_nodes);
                 for (let i = 0; i < tile_array.length; i++) {
                     tile_array[i].name = "tile";
-                    //tile_array[i].onmousedown = "WhichButton(event,this.name,this.value,this.id)";
                     tile_array[i].className = "btn btn-success square-button border d-inline";
                 }
             }
-            if ("revealed_tiles" in item_parsed) {
-                var value = item_parsed["revealed_tiles"];
-                for (let i=0; i < value.length; i++) {
-                        document.getElementById(value[i]).className = "btn square-button border d-inline font-weight-bold";
-                        document.getElementById(value[i]).style.backgroundColor = "#C4A484";
-                }
-            }
-            if ("ind_location" in item_parsed) {
-                var ind_locations = item_parsed["ind_location"];
-                if ("ind_number" in item_parsed) {
-                    var ind_number = item_parsed["ind_number"];
-                    for (let i = 0; i < ind_number.length; i++) {
-                        document.getElementById(ind_locations[i]).innerHTML = ind_number[i];
-                        document.getElementById(ind_locations[i]).style.color = indicator_style[ind_number[i]];
-                    }
-                }
-            }
+            reveal_tiles(item_parsed)
             document.getElementById(button_id).style.backgroundColor = "#C4A484";
         }
     }
@@ -62,7 +38,6 @@ function start_game(button_name, button_value, button_id) {
     xhttp.send(button_name + "=" + button_value);
     startTimer();
 }
-
 function WhichButton(event, button_name, button_value, button_id) {
     if (event.button == 0) {
         if (button_name == "start_game") {
@@ -75,25 +50,8 @@ function WhichButton(event, button_name, button_value, button_id) {
                     var item_parsed = JSON.parse(item);
                     var item_key = Object.keys(item_parsed);
 
-                    var item_value = item_parsed[item_key[0]];
+                    reveal_tiles(item_parsed)
 
-                    if ("revealed_tiles" in item_parsed) {
-                        var value = item_parsed["revealed_tiles"];
-                        for (let i=0; i < value.length; i++) {
-                                document.getElementById(value[i]).className = "btn square-button border d-inline font-weight-bold";
-                                document.getElementById(value[i]).style.backgroundColor = "#C4A484";
-                        }
-                    }
-                    if ("ind_location" in item_parsed) {
-                        var ind_locations = item_parsed["ind_location"];
-                        if ("ind_number" in item_parsed) {
-                            var ind_number = item_parsed["ind_number"];
-                            for (let i = 0; i < ind_number.length; i++) {
-                                document.getElementById(ind_locations[i]).innerHTML = ind_number[i];
-                                document.getElementById(ind_locations[i]).style.color = indicator_style[ind_number[i]];
-                            }
-                        }
-                    }
                     if ("game_over" in item_parsed) {
                         if ("mine_locations" in item_parsed) {
                             var mine_locations = item_parsed["mine_locations"];
@@ -107,7 +65,8 @@ function WhichButton(event, button_name, button_value, button_id) {
                             tile_array[i].name = "game_over";
                         }
                         stopTimer();
-                        alert("Game Over");
+                        alert("Game Over\n\nTo start a new game:\nChoose difficulty");
+                        //send_message()
                     }
                     if ("Winner_Winner" in item_parsed) {
                         var tile_nodes = document.getElementsByName("tile");
@@ -116,14 +75,13 @@ function WhichButton(event, button_name, button_value, button_id) {
                             tile_array[i].name = "winner_winner";
                         }
                         stopTimer();
-                        alert("Winner Winner!");
+                        alert("Winner Winner!\n\nTo start a new game:\nChoose difficulty");
+                        //send_message()
                     }
                 }
             };
             xhttp.open("POST", "http://127.0.0.1:5000/", true);
             xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            var test_key = "test_key";
-            var test_value = "test_value";
             xhttp.send(button_name + "=" + button_value);
         }
     }
@@ -168,4 +126,32 @@ function startTimer() {
 }
 function stopTimer() {
     clearTimeout(t);
+}
+function send_message() {
+    var r = confirm("Press a button!");
+    if (r == true) {
+    txt = "You pressed OK!";
+    send_request();
+    } else {
+    txt = "You pressed Cancel!";
+    }
+}
+function reveal_tiles(item_parsed) {
+    if ("revealed_tiles" in item_parsed) {
+        var value = item_parsed["revealed_tiles"];
+        for (let i=0; i < value.length; i++) {
+                document.getElementById(value[i]).className = "btn square-button border d-inline font-weight-bold";
+                document.getElementById(value[i]).style.backgroundColor = "#C4A484";
+        }
+    }
+    if ("ind_location" in item_parsed) {
+        var ind_locations = item_parsed["ind_location"];
+        if ("ind_number" in item_parsed) {
+            var ind_number = item_parsed["ind_number"];
+            for (let i = 0; i < ind_number.length; i++) {
+                document.getElementById(ind_locations[i]).innerHTML = ind_number[i];
+                document.getElementById(ind_locations[i]).style.color = indicator_style[ind_number[i]];
+            }
+        }
+    }
 }

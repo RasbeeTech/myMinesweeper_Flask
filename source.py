@@ -35,8 +35,6 @@ class Minesweeper:
         self.ind_location = []
         self.ind_number = []
         self.start_tile = []
-        self.game_over = False
-        self.is_started = False
 
     def play_field(self):
         if self.difficulty == 'easy':
@@ -80,11 +78,8 @@ class Minesweeper:
         self.set_indicators()
         self.reveal_tiles(row, column)
         self.flags = self.mines
-        self.is_started = True
 
-    def toggle_game_over(self):
-        self.game_over = True
-
+    # Starts a new game, not yet implemented
     def new_game(self):
         self.mine_locations = []
         self.revealed_tiles = []
@@ -92,7 +87,6 @@ class Minesweeper:
         self.ind_location = []
         self.ind_number = []
         self.start_tile = []
-        self.game_over = False
         self.flags = self.mines
 
     def set_indicators(self):
@@ -182,15 +176,3 @@ class Minesweeper:
                 revealed_ind_locations.append(tile)
                 revealed_ind_numbers.append(ind_numbers[ind_locations.index(tile)])
         return revealed_ind_locations, revealed_ind_numbers
-
-
-if __name__ == '__main__':
-    print('Minesweeper')
-    game = Minesweeper('medium')
-
-    game.start_game(4, 4)
-    print('revealed:', game.revealed_tiles)
-    print('mines:', game.mine_locations)
-
-    print(game.get_revealed_indicators())
-    game.chicken_dinner()

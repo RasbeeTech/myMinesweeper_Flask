@@ -8,10 +8,6 @@ app.secret_key = 'this is a secret key'
 game = Minesweeper('medium')
 
 
-# TODO: add modals (winner_winner and game_over)
-#   https://www.w3schools.com/js/js_popup.asp
-# TODO: Clean up code
-
 def templating(the_game):
     rows = columns = the_game.play_field()
     return render_template('index.html',
@@ -61,9 +57,6 @@ def form_post():
                     "mine_locations": game.mine_locations
                 }
                 return json.dumps(data)
-        if 'new_game' in keys:
-            game.new_game()
-            return templating(game)
         if 'start_game' in keys:
             tile = request.form['start_game']
             location = [int(x) for x in tile.split()]
@@ -76,5 +69,3 @@ def form_post():
                 "ind_number": revealed_ind_number
             }
             return json.dumps(data)
-        if 'game_over' in keys:
-            return '', 204  # HTTP empty response
