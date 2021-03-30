@@ -8,7 +8,7 @@
  
  ## Dependencies
  
- Python version: 3.8.7
+ Python version: 3.8.7  
  Flask version: 1.1.2  
  Jinja2  
  HTML5  
