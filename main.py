@@ -22,10 +22,11 @@ def index():
     return templating(game)
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/', methods=('POST',))
 def form_post():
     if request.method == 'POST':
         keys = []
+        # for loop to iterate through request and saves the keys
         for key in request.form.keys():
             keys.append(key)
         if 'difficulty' in keys:
@@ -69,3 +70,6 @@ def form_post():
                 "ind_number": revealed_ind_number
             }
             return json.dumps(data)
+        if 'new_game' in keys:
+            game.new_game()
+            return templating(game)

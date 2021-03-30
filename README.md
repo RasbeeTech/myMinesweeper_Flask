@@ -25,7 +25,7 @@
  ## How to play
  * Left-click: tile to reveal tile.  
  * Right-click: to flag mine locations.  
- * To change difficulty or restart game just choose the difficulty level.
+ * Chaning difficulty will start a new game
  
  ## Run()
  To run the application:

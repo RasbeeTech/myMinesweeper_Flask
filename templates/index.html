@@ -19,7 +19,7 @@
     <!-- Content -->
     <div class="container">
         <!-- Status Bar -->
-        <nav class="nav nav-pills nav-fill mt-3 bg-success">
+        <nav class="nav nav-pills nav-fill mt-3 bg-success rounded">
             <div class="nav-item">
                 <i class="fa fa-flag fa-3x text-danger"></i>
                 <h2 id="num_of_flags_remaining" class="d-inline pl-4">{{ num_of_flags }}</h2>
@@ -51,23 +51,26 @@
         </div>
     </div>
     <!-- Game over Modal -->
-    <div id="game-over-modal" class="modal" tabindex="-1">
+    <div id="message-modal" class="modal" tabindex="-1">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Game Over</h5>
+                <h5 id="message-title" class="modal-title"></h5>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Try again?</p>
+                <p id="message-content"></p>
             </div>
             <div class="modal-footer">
+                <form method="post">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-primary" onClick="new_game(this.name, this.value)" name="new_game" value="new_game">Yes</button>
+                    <button type="submit" class="btn btn-primary" name="new_game" value="new_game">Yes</button>
+                </form>
             </div>
         </div>
         </div>
     </div>
+    <a href="#message-modal" class="btn btn-lg btn-primary" data-toggle="modal">Launch Demo Modal</a>
     {% endblock %}
     <script src="/static/js/app.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
