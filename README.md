@@ -1,4 +1,4 @@
-# myMinesweeper-Flask
+# Minesweeper-Flask
  
  A simple Web-Application to play Minesweeper created with Flask framework.
  
